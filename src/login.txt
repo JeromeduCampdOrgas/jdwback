@@ -1,0 +1,16 @@
+{
+    "email":"justine@test.com",
+    "password":"foo123"
+}
+
+{
+    "email":"pierre@test.com",
+    "password":"foo1234"
+}
+{
+    "email":"alex@test.com",
+    "password":"root1234"
+}
+
+
+Mongo_Url=mongodb+srv://jdw:6joxeIYreW3XCqm0@jdwback.wd8owhq.mongodb.net/?retryWrites=true&w=majority
