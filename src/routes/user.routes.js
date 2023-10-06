@@ -30,17 +30,6 @@ router.post("/users/logout/all", authentification, async (req, res) => {
   }
 });
 
-router.post("/users", async (req, res, next) => {
-  const user = new User(req.body);
-
-  try {
-    const authToken = await user.generateAuthTokenAndSaveUser();
-    res.status(201).send({ user, authToken });
-  } catch (e) {
-    res.status(400).send(e);
-  }
-});
-
 router.get("/users", userController.getAllUsers);
 
 router.get("/users/me", authentification, async (req, res, next) => {
@@ -68,8 +57,10 @@ router.delete("/users/:id", authentification, async (req, res, next) => {
   const userId = req.params.id;
   try {
     const user = await User.findByIdAndRemove(userId);
-
-    if (!user) return res.status(404).send("User not found!");
+    console.log(user.isAdmin);
+    if (!user) {
+      return res.status(404).send("User not found!");
+    }
     res.send(user);
   } catch (e) {
     res.status(500).send(e);

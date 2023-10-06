@@ -1,15 +1,18 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+const tokensecret = process.env.TOKEN_SECRET;
 
 const authentification = async (req, res, next) => {
   try {
     const authToken = req.header("Authorization").replace("Bearer ", "");
-    const decodedToken = jwt.verify(authToken, "foo");
+    const decodedToken = jwt.verify(authToken, tokensecret);
     const user = await User.findOne({
       _id: decodedToken._id,
-      "authTokens.authToken": authToken,
+      //isAdmin: decodedToken.isAdmin,
     });
-    if (!user) throw new Error();
+    if (!user || !user.isAdmin) {
+      console.log("Vous n'avez pas les droits");
+    } //throw new Error();
     req.authToken = authToken;
     req.user = user;
     next();

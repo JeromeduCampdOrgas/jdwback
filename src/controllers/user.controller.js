@@ -20,16 +20,14 @@ userLogin = async (req, res) => {
 newUser = async (req, res, next) => {
   const user = new User(req.body);
   try {
-    const saveUser = await user.save();
-    console.log(saveUser);
-    res.status(201).send(saveUser);
+    const authToken = await user.generateAuthTokenAndSaveUser();
+    res.status(201).send({ user, authToken });
   } catch (e) {
     res.status(400).send(e);
   }
 };
 
 getAllUsers = async (req, res, next) => {
-  console.log(req);
   try {
     const users = await User.find();
     res.status(200).send(users);
@@ -66,6 +64,7 @@ updateUser = async (req, res, next) => {
 
 deleteUser = async (req, res, next) => {
   const userId = req.params.id;
+
   try {
     const user = await User.findByIdAndRemove(userId);
 
